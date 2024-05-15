@@ -29,6 +29,21 @@ axios("https://api.thecatapi.com/v1/images/search").then(x=> {
  * This function should execute immediately.
  */
 
+(async function initialLoad() {
+  const res = await axios("/breeds");
+  const breeds = await res.data;
+
+  breeds.forEach((breed) => {
+    const opt = document.createElement("option");
+    opt.value = breed.id;
+    opt.textContent = breed.name;
+
+    breedSelect.appendChild(opt);
+  });
+
+  loadCarousel();
+})();
+
 /**
  * 2. Create an event handler for breedSelect that does the following:
  * - Retrieve information on the selected breed from the cat API using fetch().

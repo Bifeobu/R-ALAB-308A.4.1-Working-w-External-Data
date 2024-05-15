@@ -59,6 +59,44 @@ axios("https://api.thecatapi.com/v1/images/search").then(x=> {
  * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
 
+breedSelect.addEventListener("change", loadCarousel);
+async function loadCarousel() {
+  const val = breedSelect.value;
+  const url = `/images/search?limit=25&breed_ids=${val}`;
+
+  const res = await axios(url, {
+    onDownloadProgress: updateProgress
+  });
+
+  buildCarousel(res.data);
+}
+
+function buildCarousel(data, favourites) {
+  Carousel.clear();
+  infoDump.innerHTML = "";
+
+  data.forEach((ele) => {
+    const item = Carousel.createCarouselItem(
+      ele.url,
+      breedSelect.value,
+      ele.id
+    );
+    Carousel.appendCarousel(item);
+  });
+
+  if (favourites) {
+    infoDump.innerHTML = "Here are your saved favourites!";
+  } else if (data[0]) {
+    const info = data[0].breeds || null;
+    if (info && info[0].description) infoDump.innerHTML = info[0].description;
+  } else {
+    infoDump.innerHTML =
+      "<div class='text-center'>No information on this breed, sorry!</div>";
+  }
+
+  Carousel.start();
+}
+
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
  */

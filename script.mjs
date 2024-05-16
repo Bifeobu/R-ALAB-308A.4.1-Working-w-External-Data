@@ -71,7 +71,20 @@ async function loadCarousel() {
   buildCarousel(res.data);
 }
 
-function buildCarousel(data, favourites)
+function buildCarousel(data, favourites) {
+  Carousel.clear();
+  infoDump.innerHTML = "";
+
+  data.forEach((ele) => {
+    const item = Carousel.createCarouselItem(
+      ele.url,
+      breedSelect.value,
+      ele.id
+    );
+    Carousel.appendCarousel(item);
+  });
+
+}
 
 
 /**

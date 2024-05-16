@@ -83,6 +83,18 @@ function buildCarousel(data, favourites) {
     );
     Carousel.appendCarousel(item);
   });
+  
+  if (favourites) {
+    infoDump.innerHTML = "Here are your saved favourites!";
+  } else if (data[0]) {
+    const info = data[0].breeds || null;
+    if (info && info[0].description) infoDump.innerHTML = info[0].description;
+  } else {
+    infoDump.innerHTML =
+      "<div class='text-center'>No information on this breed, sorry!</div>";
+  }
+
+  Carousel.start();
 
 }
 
